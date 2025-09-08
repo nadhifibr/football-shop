@@ -1,32 +1,37 @@
-import uuid
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
-class News(models.Model):
+class Product(models.Model):
     CATEGORY_CHOICES = [
-        ('transfer', 'Transfer'),
-        ('update', 'Update'),
-        ('exclusive', 'Exclusive'),
-        ('match', 'Match'),
-        ('rumor', 'Rumor'),
-        ('analysis', 'Analysis'),
+        ('jersey', 'Jersey'),
+        ('shoes', 'Shoes'),
+        ('ball', 'Football'),
+        ('accessories', 'Accessories'),
+        ('training', 'Training Equipment'),
     ]
-    
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=255)
-    content = models.TextField()
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='update')
+
+    name = models.CharField(max_length=100)
+    price = models.PositiveIntegerField(default=0)
+    description = models.TextField()
     thumbnail = models.URLField(blank=True, null=True)
-    news_views = models.PositiveIntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='jersey')
     is_featured = models.BooleanField(default=False)
-    
+    brand = models.CharField(max_length=100)
+    stock = models.PositiveIntegerField(default=0)
+    rating = models.DecimalField(
+        max_digits=2,
+        decimal_places=1,
+        default=0.0,
+        validators=[
+            MinValueValidator(0.0),   
+            MaxValueValidator(5.0)    
+        ]
+    )
+
     def __str__(self):
         return self.title
     
     @property
-    def is_news_hot(self):
-        return self.news_views > 20
-        
-    def increment_views(self):
-        self.news_views += 1
-        self.save()
+    def is_in_stock(self):
+        return self.stock > 0
+    

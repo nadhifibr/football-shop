@@ -8,4 +8,4 @@ def show_main(request):
         'class': 'PBP C'
     }
 
-    return render(request, "main.html", context)
+    return render(request, "main/main.html", context)
