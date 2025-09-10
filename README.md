@@ -40,7 +40,7 @@ You can access the web here: [FeetBalls](https://muhammad-nadhif41-footballshop.
    - Buat file README.md yang berisi tautan menuju aplikasi PWS dan menjawab beberapa pertanyaan.
 
 ### Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
-   - ![Bagan Django](assets/bagan_django.jpg)
+   ![Bagan Django](assets/bagan_django.jpg)
 
 ### Jelaskan peran settings.py dalam proyek Django!
  - settings.py bagaikan otak dari project tersebut. Ia mengatur identitas project (bahasa, zona waktu, dll), daftar aplikasi aktif (di INSTALLED_APPS), konfigurasi database,  mengatur lokasi file statis dan file upload dari user, keamanan, dan lain-lain.
