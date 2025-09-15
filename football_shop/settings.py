@@ -32,7 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "muhammad-nadhif41-footballshop.pbp.cs.ui.ac.id"]
 CSRF_TRUSTED_ORIGINS = [
-    "https://muhammad-nadhif41-footballshop.pbp.cs.ui.ac.id/"
+    "https://muhammad-nadhif41-footballshop.pbp.cs.ui.ac.id"
 ]
 
 # Application definition
