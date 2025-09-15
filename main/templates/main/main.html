@@ -1,10 +1,7 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block meta %}
   <title>{{ title }}</title>
 
   <!-- Tailwind -->
@@ -25,9 +22,9 @@
       font-family: "Contrail One", sans-serif;
     }
   </style>
-</head>
+{% endblock meta %}
 
-<body class="bg-gray-100">
+{% block content %}
   <!-- HEADER -->
   <header id="header" class="sticky top-0 flex justify-between items-center bg-gray-100 px-8 py-4 shadow-md z-50">
     <a href="">
@@ -39,7 +36,6 @@
       <a class="text-gray-800 text-base font-light hover:text-blue-500" href="#contact">Contact</a>
     </nav>
   </header>
-
 
   <!-- HERO -->
   <main>
@@ -56,6 +52,7 @@
         <h2 class="text-5xl mb-4 font-myfont px-8 py-4 shadow-md">About</h2>
         <p class="text-lg font-light m-4 pb-2">
           FeetBalls is a football equipment store that provides everything you need, from shoes, jerseys, balls, to other supporting accessories. We are here for football fans and players who want to get high-quality products at the best prices. With a complete and always updated collection, FeetBalls is the right place for you to look your best on the field, whether for casual training or serious matches.
+        </p>
       </div>
     </section>
 
@@ -97,12 +94,40 @@
         </div>
 
       </div>
-    </section>
 
-       
+    </section>
+      <a href="{% url 'main:create_product' %}">
+        <button>+ Add Product</button>
+      </a>
+      {% if not product_list %}
+      <p>Belum ada data produk pada FeetBalls.</p>
+      {% else %}
+      {% for product in product_list %}
+      <div>
+        <h2><a href="{% url 'main:show_product' product.id %}">{{ product.title }}</a></h2>
+
+        <p><b>{{ product.get_category_display }}</b>{% if product.is_featured %} | 
+          <b>Featured</b>{% endif %}</p>
+
+        {% if product.thumbnail %}
+        <img src="{{ product.thumbnail }}" alt="product" width="150" height="100">
+        <br />
+        {% endif %}
+
+        <p>{{ product.description|truncatewords:25 }}...</p>
+
+        <p><a href="{% url 'main:show_product' product.id %}"><button>Read More</button></a></p>
+      </div>
+
+      <hr>
+      {% endfor %}
+
+      {% endif %}
+    <section>
+
+    </section>
   </main>
 
   <!-- JS -->
   <script src="{% static 'main/script.js' %}"></script>
-</body>
-</html>
+{% endblock content %}

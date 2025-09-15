@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -10,6 +11,7 @@ class Product(models.Model):
         ('training', 'Training Equipment'),
     ]
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     price = models.PositiveIntegerField(default=0)
     description = models.TextField()
