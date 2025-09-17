@@ -34,6 +34,7 @@
       <a class="text-gray-800 text-base font-light hover:text-blue-500" href="#about">About</a>
       <a class="text-gray-800 text-base font-light hover:text-blue-500" href="#product">Product</a>
       <a class="text-gray-800 text-base font-light hover:text-blue-500" href="#contact">Contact</a>
+      <a href="{% url 'main:logout' %}"><button>Logout</button></a>
     </nav>
   </header>
 
@@ -99,6 +100,12 @@
       <a href="{% url 'main:create_product' %}">
         <button>+ Add Product</button>
       </a>
+      <a href="?filter=all">
+          <button type="button">All Articles</button>
+      </a>
+      <a href="?filter=my">
+          <button type="button">My Articles</button>
+      </a> 
       {% if not product_list %}
       <p>Belum ada data produk pada FeetBalls.</p>
       {% else %}
