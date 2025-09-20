@@ -34,7 +34,8 @@
       <a class="text-gray-800 text-base font-light hover:text-blue-500" href="#about">About</a>
       <a class="text-gray-800 text-base font-light hover:text-blue-500" href="#product">Product</a>
       <a class="text-gray-800 text-base font-light hover:text-blue-500" href="#contact">Contact</a>
-      <a href="{% url 'main:logout' %}"><button>Logout</button></a>
+      <a class="text-gray-800 text-base font-light hover:text-blue-500" href="">{{ name }}</a>
+      <a class="text-gray-800 text-base font-light hover:text-blue-500" href="{% url 'main:logout' %}"><button>Logout</button></a>
     </nav>
   </header>
 
@@ -97,6 +98,7 @@
       </div>
 
     </section>
+      <p>Last login: {{ last_login }}</p>
       <a href="{% url 'main:create_product' %}">
         <button>+ Add Product</button>
       </a>

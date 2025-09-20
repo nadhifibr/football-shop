@@ -121,3 +121,22 @@ You can access the web here: [FeetBalls](https://muhammad-nadhif41-footballshop.
 ![JSON](assets/json.jpg)
 ![XML by ID](assets/xml_by_id.jpg)
 ![JSON by ID](assets/json_by_id.jpg)
+
+## Tugas Individu 4 - PBP Ganjil 2025/2026
+
+### Menjawab beberapa pertanyaan berikut pada README.md pada root folder
+
+1. **Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.**
+ - 
+
+2. **Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?**
+ - 
+
+3. **Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?**
+ - 
+
+4. **Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?**
+ - 
+
+5. **Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).**
+ - 
