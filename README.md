@@ -146,3 +146,66 @@ You can access the web here: [FeetBalls](https://muhammad-nadhif41-footballshop.
  Untuk menghubungkan model `Product` dengan `User`, kita akan meng-import `User` dari `django.contrib.auth.models` dan akan kita hubungkan di dalam class `Product` tersebut menggunakan `ForeignKey`.
 
  Untuk menampilkan detail informasi pengguna yang sedang login dan menerapkan cookies seperti last login, kita dapat menggunakan `request.user` yang mana kita akan mendapatkan object `User` yang sedang login. `request.user.username` memberikan kita username dari siapa yang sedang login sehingga kita bisa mengatur `show_main` di mana `context`-nya terdapat `request.user.username` lalu tinggal diatur di HTML `show_main`-nya (seperti `{{ name }}`). Di fungsi login, kita akan menambahkan `request.set_cookie` di mana kita akan membuat cookie manual yang dinamakan `last_login`. Untuk last login, kita dapat menggunakan `request.COOKIES.get` yang akan mengambil cookie `last_login`.
+
+## Tugas Individu 5 - PBP Ganjil 2025/2026
+
+### Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+1. Inline
+   Ditulis langsung di HTML, misal <p style=...>.
+
+2. ID Selector
+   Menggunakan ID dari elemennya, misal ada <p id="title">, selectornya adalah #title {}.
+
+3. Class Selector
+   Menggunakan class dari elemennya, misal ada <p class="list">, selectornya adalah .list {}.
+
+4. Element Selector
+   Menggunakan elementnya, misal div {}.
+
+5. Universal Selector
+   Keseluruhan, misal * {}.
+
+### Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+   Responsive web design merupakan konsep di mana web menyesuaikan ukuran layar dari device tersebut. Alasan responsive web design penting karena lebih user-friendly, mengurangi kebutuhan membuat aplikasi sesuai device, dan SEO yang bagus. Misal, di zaman sekarang lebih banyak orang yang menggunakan HP dibanding laptop. Oleh karena itu, kita harus membuat web yang menyesuaikan ukuran tidak hanya di laptop tetapi di HP juga. Google juga menilai web yang responsive memiliki SEO yang bagus. Contoh aplikasi yang sudah menerapkan responsive web design adalah Youtube karena ketika diperkecil halamannya, fitur-fitur menjadi terdapat di ikon burger menu. Sedangkan aplikasi yang belum menerapkan responsive web design biasanya adalah website sekolah, karena ketika dibuka di HP, web-nya masih seperti di laptop tapi ukurannya lebih kecil sehingga kita perlu zoom-in.
+
+### Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+   Misal kita memiliki elemen yang terdapat konten. Margin adalah ruang di luar elemen itu, bisa jadi jarak antar elemen dengan elemen yang lain. Border seperti garis yang mengelilingi elemen. Sedangkan itu, padding adalah jarak antara border dan konten.
+
+### Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+   Flex box dan grid merupakan cara kita dalam me-layout suatu web. Flex box mengatur item dalam 1 dimensi (1 baris dan 1 kolom). Flex box bagus ketika digunakan untuk membuat navbar. Sedangkan itu, grid mengatur item dalam 2 dimensi, jadi kita bisa mengatur baris dan kolom sekaligus. Grid bagus ketika me-layout halaman utama.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+   1. Implementasikan fungsi untuk menghapus dan mengedit product.
+      Menambahkan method `edit_product` dan `delete_product` di `views.py`. Membuat `edit_product.html` di `main/templates`, lalu menambahkan di `urls.py`. Ini kodenya:
+
+         def edit_product(request, id):
+            product = get_object_or_404(Product, pk=id)
+            form = ProductForm(request.POST or None, instance=product)
+            if form.is_valid() and request.method == 'POST':
+               form.save()
+               return redirect('main:show_main')
+
+            context = {
+               'form': form
+            }
+
+            return render(request, "main/edit_product.html", context)
+
+         def delete_product(request, id):
+            product = get_object_or_404(Product, pk=id)
+            product.delete()
+            return HttpResponseRedirect(reverse('main:show_main'))
+
+   2. Kustomisasi desain pada template HTML yang telah dibuat pada tugas-tugas sebelumnya menggunakan CSS atau CSS framework (seperti Bootstrap, Tailwind, Bulma) dengan ketentuan sebagai berikut: ...
+      Meng-import tailwind menggunakan <script src="https://cdn.tailwindcss.com"></script>, letakkan di base.html karena ini merupakan dasar dari tiap file HTML. Kustomisasi sesuai keinginan. Menggunakan filtering dan lain-lain. Untuk membuat tombol hamburger dapat menggunakan JavaScript, begini kodenya:
+
+         <script>
+         const burger = document.getElementById("burger");
+         const mobileMenu = document.getElementById("mobileMenu");
+
+         burger.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+         });
+         </script>
+
+      Jadi ketika dipencet, bisa muncul dan bisa tidak muncul (click => hidden).

@@ -52,7 +52,9 @@ def show_product(request, id):
     product = get_object_or_404(Product, pk=id)
 
     context = {
-        'product': product
+        'product': product,
+        'title' : 'FeetBalls',
+        'name': request.user.username,
     }
 
     return render(request, "main/product_details.html", context)
@@ -116,3 +118,21 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def edit_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+
+    context = {
+        'form': form
+    }
+
+    return render(request, "main/edit_product.html", context)
+
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))

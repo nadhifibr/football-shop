@@ -3,42 +3,10 @@
 
 {% block meta %}
   <title>{{ title }}</title>
-
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Contrail+One&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap" rel="stylesheet">
-
-  <style>
-    .font-myfont {
-      font-family: "Fugaz One", sans-serif;
-    }
-
-    body {
-      font-family: "Contrail One", sans-serif;
-    }
-  </style>
 {% endblock meta %}
 
 {% block content %}
-  <!-- HEADER -->
-  <header id="header" class="sticky top-0 flex justify-between items-center bg-gray-100 px-8 py-4 shadow-md z-50">
-    <a href="">
-      <p id="title" class="m-0 text-2xl font-myfont">{{ title }}</p>
-    </a>
-    <nav id="nav-bar" class="flex gap-6">
-      <a class="text-gray-800 text-base font-light hover:text-blue-500" href="#about">About</a>
-      <a class="text-gray-800 text-base font-light hover:text-blue-500" href="#product">Product</a>
-      <a class="text-gray-800 text-base font-light hover:text-blue-500" href="#contact">Contact</a>
-      <a class="text-gray-800 text-base font-light hover:text-blue-500" href="">{{ name }}</a>
-      <a class="text-gray-800 text-base font-light hover:text-blue-500" href="{% url 'main:logout' %}"><button>Logout</button></a>
-    </nav>
-  </header>
-
+{% include 'navbar.html' %}
   <!-- HERO -->
   <main>
     <section class="relative h-[70vh] w-full overflow-hidden">
@@ -66,72 +34,44 @@
         <h2 class="text-5xl mb-4 font-myfont px-8 py-4 shadow-md">Product</h2>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-8 m-4">
-    
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-          <img src="https://images.unsplash.com/photo-1536121752905-02ab90945c26?q=80&w=1331&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Sepatu Bola" class="w-full h-48 object-cover">
-          <div class="p-4">
-            <h3 class="text-xl font-myfont mb-2">{{ shoes }}</h3>
-            <p class="text-gray-600 text-sm mb-4">High-quality football shoes for maximum performance on the field.</p>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Buy</button>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-          <img src="https://images.unsplash.com/photo-1616124619460-ff4ed8f4683c?q=80&w=698&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Jersey" class="w-full h-48 object-cover">
-          <div class="p-4">
-            <h3 class="text-xl font-myfont mb-2">{{ jersey }}</h3>
-            <p class="text-gray-600 text-sm mb-4">Comfortable jerseys with the latest designs to support both style and performance.</p>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Buy</button>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-          <img src="https://images.unsplash.com/photo-1616514169928-a1e40c6f791c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Bola" class="w-full h-48 object-cover">
-          <div class="p-4">
-            <h3 class="text-xl font-myfont mb-2">{{ ball }}</h3>
-            <p class="text-gray-600 text-sm mb-4">Official ball made with premium materials, perfect for matches and training.</p>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Buy</button>
-          </div>
-        </div>
-
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 bg-white rounded-lg p-4">
+      <div class="flex space-x-3 mb-4 sm:mb-0">
+        <a href="?" class="{% if request.GET.filter == 'all' or not request.GET.filter  %} bg-blue-500 text-white{% else %}bg-white text-gray-700 border border-gray-300{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-blue-500 hover:text-white">
+          All Product
+        </a>
+        <a href="?filter=my" class="{% if request.GET.filter == 'my' %} bg-blue-500 text-white{% else %}bg-white text-gray-700 border border-gray-300{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-blue-500 hover:text-white">
+          My Product
+        </a>
+        <a href="{% url 'main:create_product' %}" class="bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-md font-medium transition-colors hover:bg-blue-500 hover:text-white">
+          <button>Add Product</button>
+        </a>
       </div>
+      {% if user.is_authenticated %}
+        <div class="text-sm text-gray-500">
+          Last login: {{ last_login }}
+        </div>
+      {% endif %}
+    </div>
 
     </section>
-      <p>Last login: {{ last_login }}</p>
-      <a href="{% url 'main:create_product' %}">
-        <button>+ Add Product</button>
-      </a>
-      <a href="?filter=all">
-          <button type="button">All Articles</button>
-      </a>
-      <a href="?filter=my">
-          <button type="button">My Articles</button>
-      </a> 
       {% if not product_list %}
-      <p>Belum ada data produk pada FeetBalls.</p>
-      {% else %}
-      {% for product in product_list %}
-      <div>
-        <h2><a href="{% url 'main:show_product' product.id %}">{{ product.name }}</a></h2>
-
-        <p><b>{{ product.get_category_display }}</b>{% if product.is_featured %} | 
-          <b>Featured</b>{% endif %}</p>
-
-        {% if product.thumbnail %}
-        <img src="{{ product.thumbnail }}" alt="product" width="150" height="100">
-        <br />
-        {% endif %}
-
-        <p>{{ product.description|truncatewords:25 }}...</p>
-
-        <p><a href="{% url 'main:show_product' product.id %}"><button>Read More</button></a></p>
+      <div class="bg-white rounded-lg border border-gray-200 p-12 text-center">
+        <div class="w-32 h-32 mx-auto mb-4">
+          <img src="{% static 'image/no-product.png' %}" alt="No product available" class="w-full h-full object-contain">
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No product found</h3>
+        <p class="text-gray-500 mb-6">Be the first to share football product with the community.</p>
+        <a href="{% url 'main:create_product' %}" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+          Create product
+        </a>
       </div>
-
-      <hr>
-      {% endfor %}
-
-      {% endif %}
+    {% else %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for product in product_list %}
+          {% include 'card_product.html' with product=product %}
+        {% endfor %}
+      </div>
+    {% endif %}
     <section>
 
     </section>

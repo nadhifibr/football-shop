@@ -2,9 +2,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block meta %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% block meta %} {% endblock meta %}
+    {% endblock meta %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'main/global.css' %}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Contrail+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap" rel="stylesheet">
+
+    <style>
+        .font-myfont {
+        font-family: "Fugaz One", sans-serif;
+        }
+
+        body {
+        font-family: "Contrail One", sans-serif;
+        }
+    </style>
 </head>
 
 <body>
