@@ -14,7 +14,6 @@
     <nav id="nav-bar" class="hidden sm:flex gap-6">
       <a class="text-gray-800 hover:text-blue-500" href="#about">About</a>
       <a class="text-gray-800 hover:text-blue-500" href="#product">Product</a>
-      <a class="text-gray-800 hover:text-blue-500" href="#contact">Contact</a>
       <a class="text-gray-800 hover:text-blue-500" href="">{{ name }}</a>
       <a class="text-gray-800 hover:text-red-500" href="{% url 'main:logout' %}"><button>Logout</button></a>
     </nav>
@@ -24,7 +23,6 @@
   <div id="mobileMenu" class="hidden sm:hidden flex flex-col gap-4 mt-4 bg-white p-4 rounded-md shadow-md">
     <a class="text-gray-800 hover:text-blue-500" href="#about">About</a>
     <a class="text-gray-800 hover:text-blue-500" href="#product">Product</a>
-    <a class="text-gray-800 hover:text-blue-500" href="#contact">Contact</a>
     <a class="text-gray-800 hover:text-blue-500" href="">{{ name }}</a>
     <a class="text-gray-800 hover:text-red-500" href="{% url 'main:logout' %}"><button>Logout</button></a>
   </div>
