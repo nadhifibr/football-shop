@@ -1,0 +1,77 @@
+<!-- Modal Delete -->
+<div id="deleteCrudModal" 
+     class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50">
+  <div id="deleteCrudModalContent" 
+       class="bg-white rounded-lg shadow-lg w-96 max-w-full">
+    
+    <!-- Modal header -->
+    <div class="flex items-center justify-between p-4 border-b">
+      <h3 class="text-xl font-semibold text-gray-900">
+        Delete Product
+      </h3>
+      <button type="button" 
+              class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5"
+              onclick="hideDeleteModal()">
+        ✕
+      </button>
+    </div>
+
+    <!-- Modal body -->
+    <div class="px-6 py-4">
+      <p class="text-gray-600 text-sm">
+        Are you sure you want to delete 
+        <span id="deleteProductName" class="font-semibold"></span>?
+        This action cannot be undone.
+      </p>
+      <!-- hidden field -->
+      <input type="hidden" id="deleteProductId">
+    </div>
+
+    <!-- Modal footer -->
+    <div class="flex justify-end gap-2 p-4 border-t">
+      <button type="button" 
+              class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100"
+              onclick="hideDeleteModal()">Cancel</button>
+      <button type="button" 
+              class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+              onclick="confirmDeleteProduct()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // buka modal delete
+  function showDeleteModal(productId, productName) {
+    document.getElementById("deleteProductId").value = productId;
+    document.getElementById("deleteProductName").textContent = productName;
+    document.getElementById("deleteCrudModal").classList.remove("hidden");
+  }
+
+  // tutup modal
+  function hideDeleteModal() {
+    document.getElementById("deleteCrudModal").classList.add("hidden");
+  }
+
+  // confirm delete → AJAX call
+  async function confirmDeleteProduct() {
+    const productId = document.getElementById("deleteProductId").value;
+
+    try {
+      await fetch(`/delete-product-ajax/${productId}/`, {
+        method: "POST",
+      });
+
+      hideDeleteModal();
+      showToast('Product deleted successfully!', '', 'success');
+      document.dispatchEvent(new CustomEvent('productDeleted'));
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      showToast('Failed to delete product', '', 'error');
+    }
+  }
+
+  // refresh list setelah delete
+  document.addEventListener('productDeleted', function() {
+    fetchProductFromServer();
+  });
+</script>

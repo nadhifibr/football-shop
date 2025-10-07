@@ -15,7 +15,10 @@
       <a class="text-gray-800 hover:text-blue-500" href="#about">About</a>
       <a class="text-gray-800 hover:text-blue-500" href="#product">Product</a>
       <a class="text-gray-800 hover:text-blue-500" href="">{{ name }}</a>
-      <a class="text-gray-800 hover:text-red-500" href="{% url 'main:logout' %}"><button>Logout</button></a>
+      <button onclick="logoutUser()" 
+        class="text-gray-800 hover:text-red-500 font-medium">
+        Logout
+      </button>
     </nav>
   </div>
 
@@ -24,7 +27,10 @@
     <a class="text-gray-800 hover:text-blue-500" href="#about">About</a>
     <a class="text-gray-800 hover:text-blue-500" href="#product">Product</a>
     <a class="text-gray-800 hover:text-blue-500" href="">{{ name }}</a>
-    <a class="text-gray-800 hover:text-red-500" href="{% url 'main:logout' %}"><button>Logout</button></a>
+    <button onclick="logoutUser()" 
+      class="text-gray-800 hover:text-red-500 font-medium text-left">
+      Logout
+    </button>
   </div>
 </header>
 
@@ -35,4 +41,26 @@
   burger.addEventListener("click", () => {
     mobileMenu.classList.toggle("hidden");
   });
+
+  async function logoutUser() {
+  try {
+    const response = await fetch("{% url 'main:logout_user_ajax' %}", {
+      method: "POST",
+      headers: { "X-Requested-With": "XMLHttpRequest" }
+    });
+
+    if (response.ok) {
+      showToast("Logout success!", "Sampai jumpa lagi 👋", "success");
+      setTimeout(() => {
+        window.location.href = "{% url 'main:login' %}";
+      }, 800);
+    } else {
+      showToast("Logout gagal!", "Silakan coba lagi", "error");
+    }
+  } catch (err) {
+    console.error(err);
+    showToast("Terjadi error saat logout", "", "error");
+  }
+
+} 
 </script>

@@ -13,7 +13,7 @@
         <p class="text-gray-600">Welcome back to FeetBalls</p>
       </div>
 
-      <!-- Form Errors Display -->
+      <!-- Error display masih ada kalau fallback non-AJAX -->
       {% if form.non_field_errors %}
         <div class="mb-6">
           {% for error in form.non_field_errors %}
@@ -38,9 +38,9 @@
         </div>
       {% endif %}
 
-      <form method="POST" action="" class="space-y-6">
+      <!-- 🔑 form login -->
+      <form id="loginForm" method="POST" action="" class="space-y-6">
         {% csrf_token %}
-        
         <div>
           <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
           <input 
@@ -70,7 +70,7 @@
         </button>
       </form>
 
-      <!-- Messages Display -->
+      <!-- messages (backup kalau JS mati) -->
       {% if messages %}
         <div class="mt-6">
           {% for message in messages %}
@@ -102,4 +102,32 @@
     </div>
   </div>
 </div>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+
+  try {
+    const response = await fetch("{% url 'main:login' %}", {
+      method: "POST",
+      body: formData,
+      headers: { "X-Requested-With": "XMLHttpRequest" }
+    });
+
+    if (response.ok) {
+      showToast("Login success!", "", "success");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 500);
+    } else {
+      showToast("Login failed! Please check your credentials", "", "error");
+    }
+  } catch (err) {
+    console.error(err);
+    showToast("Something went wrong!", "", "error");
+  }
+});
+</script>
+
 {% endblock content %}

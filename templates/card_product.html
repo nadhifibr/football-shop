@@ -64,13 +64,17 @@
           Read more
         </a>
         <div class="flex space-x-2">
-          <a href="{% url 'main:edit_product' product.id %}" class="text-gray-600 hover:text-gray-700 text-sm transition-colors">
+          <button 
+            class="text-gray-600 hover:text-gray-700 text-sm transition-colors"
+            onclick="loadAndOpenEditModal('{{ product.id }}')">
             Edit
-          </a>
-          <a href="{% url 'main:delete_product' product.id %}" class="text-red-600 hover:text-red-700 text-sm transition-colors">
+          </button>
+          <button 
+            class="text-red-600 hover:text-red-700 text-sm transition-colors"
+            onclick="showDeleteModal('{{ product.id }}', '{{ product.name }}')">
             Delete
-          </a>
-        </div>
+          </button>
+        </div>  
       </div>
     {% else %}
       <div class="pt-4 border-t border-gray-100">

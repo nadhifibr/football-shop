@@ -125,26 +125,38 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your account has been successfully created!')
-            return redirect('main:login')
-    context = {'form':form}
-    return render(request, 'register.html', context)
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse({"status": "success"}, status=201)
+            else:
+                messages.success(request, 'Your account has been successfully created!')
+                return redirect('main:login')
+        else:
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse({"status": "error", "errors": form.errors}, status=400)
+
+    return render(request, 'register.html', {"form": form})
 
 def login_user(request):
-   if request.method == 'POST':
-      form = AuthenticationForm(data=request.POST)
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
 
-      if form.is_valid():
+        if form.is_valid():
             user = form.get_user()
             login(request, user)
-            response = HttpResponseRedirect(reverse("main:show_main"))
-            response.set_cookie('last_login', str(datetime.datetime.now()))
-            return response
+            # Cek kalau request AJAX
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse({"status": "success"}, status=200)
+            else:
+                response = HttpResponseRedirect(reverse("main:show_main"))
+                response.set_cookie('last_login', str(datetime.datetime.now()))
+                return response
+        else:
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse({"status": "error", "errors": form.errors}, status=400)
 
-   else:
-      form = AuthenticationForm(request)
-   context = {'form': form}
-   return render(request, 'login.html', context)
+    else:
+        form = AuthenticationForm(request)
+    return render(request, 'login.html', {"form": form})
 
 def logout_user(request):
     logout(request)
@@ -152,18 +164,27 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
-def edit_product(request, id):
-    product = get_object_or_404(Product, pk=id)
-    form = ProductForm(request.POST or None, instance=product)
-    if form.is_valid() and request.method == 'POST':
-        form.save()
-        return redirect('main:show_main')
+@csrf_exempt
+def logout_user_ajax(request):
+    if request.method == "POST":
+        logout(request)
+        response = JsonResponse({"message": "Logged out"})
+        response.delete_cookie("last_login")
+        return response
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
-    context = {
-        'form': form
-    }
+# def edit_product(request, id):
+#     product = get_object_or_404(Product, pk=id)
+#     form = ProductForm(request.POST or None, instance=product)
+#     if form.is_valid() and request.method == 'POST':
+#         form.save()
+#         return redirect('main:show_main')
 
-    return render(request, "edit_product.html", context)
+#     context = {
+#         'form': form
+#     }
+
+#     return render(request, "edit_product.html", context)
 
 def delete_product(request, id):
     product = get_object_or_404(Product, pk=id)
@@ -180,7 +201,7 @@ def add_product_entry_ajax(request):
     brand = strip_tags(request.POST.get("brand"))
     price = request.POST.get("price")
     stock = request.POST.get("stock")
-    is_featured = request.POST.get("is_featured") == 'on'  # checkbox handling
+    is_featured = request.POST.get("is_featured") == 'on'
     user = request.user
 
     new_product = Product(
@@ -199,3 +220,30 @@ def add_product_entry_ajax(request):
 
     return HttpResponse(b"CREATED", status=201)
 
+@csrf_exempt
+@require_POST
+def update_product_entry_ajax(request, id):
+    product = get_object_or_404(Product, pk=id, user=request.user)
+
+    product.name = strip_tags(request.POST.get("name"))
+    product.description = strip_tags(request.POST.get("description"))
+    product.category = request.POST.get("category")
+    product.thumbnail = request.POST.get("thumbnail")
+    product.brand = strip_tags(request.POST.get("brand"))
+    product.price = request.POST.get("price") or 0
+    product.stock = request.POST.get("stock") or 0
+    product.is_featured = request.POST.get("is_featured") == 'on'
+
+    product.save()
+
+    return HttpResponse(b"UPDATED", status=200)
+
+@csrf_exempt
+@require_POST
+def delete_product_ajax(request, id):
+    try:
+        product = get_object_or_404(Product, pk=id, user=request.user)
+        product.delete()
+        return JsonResponse({"status": "success"}, status=200)
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)}, status=400)
